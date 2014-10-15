@@ -1,0 +1,34 @@
+#!/bin/sh
+# Start script for confd base image with supervisor
+
+# Shell setup
+unalias -a
+hash -r
+set -o nounset
+set -o errexit
+
+# Certain normal confd command line options are forbidden since they would
+# interfere with normal operation:
+# 	-confdir
+#   -config-file
+# 	-noop
+#	-onetime
+#	-version
+for opt in "$@" ; do
+	case "$opt" in
+		-confdir*|-config-file*|-noop*|onetime*|version*) echo "Forbidden option: $opt" ; exit 1 ;;
+		*) ;;
+	esac
+done
+
+# Do a quick onetime run of confd to initialize the configuration
+/opt/confd -onetime "$@"
+
+# Add supervisor configuration to run confd
+cat > /etc/supervisor/conf.d/confd.conf <<CONFD
+[program:confd]
+command=/opt/confd "$@"
+CONFD
+
+# Start supervisor, which will start the confd server and whatever the base user configured
+/usr/bin/supervisord --nodaemon
