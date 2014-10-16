@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Start script for confd base image with supervisor
 
 # Shell setup
@@ -24,10 +24,11 @@ done
 # Do a quick onetime run of confd to initialize the configuration
 /opt/confd -onetime "$@"
 
-# Add supervisor configuration to run confd
+# Add supervisor configuration to run confd, the printf is to preserve argument quoting
+args=$(printf " %q" "$@")
 cat > /etc/supervisor/conf.d/confd.conf <<CONFD
 [program:confd]
-command=/opt/confd "$@"
+command=/opt/confd $args
 CONFD
 
 # Start supervisor, which will start the confd server and whatever the base user configured
