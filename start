@@ -17,27 +17,29 @@ prefix="/"
 scheme="http"
 srv_domain=""
 watch=0
+print_usage=0
 
-USAGE=<<END
+USAGE="
 Usage:
 This is a subset of the confd command line arguments. The biggest difference
 is that I have both short options and long options, with the long options
 denoted by the standard double dash instead of a single dash:
-  -b|--backend="$backend"
-  --client-ca-keys="$client_ca_keys"
-  --client-cert="$client_cert" 
-  --client-key="$client_key" 
+  -b|--backend=\"$backend\"
+  --client-ca-keys=\"$client_ca_keys\"
+  --client-cert=\"$client_cert\" 
+  --client-key=\"$client_key\" 
   -i|--interval=$interval
   -n|--node=[$node]
-  -p|--prefix="$prefix"
-  -s|--scheme="$scheme"
-  --srv-domain="$srv_domain"
+  -p|--prefix=\"$prefix\"
+  -s|--scheme=\"$scheme\"
+  --srv-domain=\"$srv_domain\"
   -w|--watch
-END
+  -h|--help
+"
 
 # Parse command line options
-OPTS=$(getopt -n $0 -o b:i:n:p:s:w \
-	--long backend:,client-ca-keys:,client-cert:,interval:,node:,prefix:,scheme:,srv-domkain:,watch \
+OPTS=$(getopt -n $0 -o b:i:n:p:s:wh \
+	--long backend:,client-ca-keys:,client-cert:,interval:,node:,prefix:,scheme:,srv-domkain:,watch,help \
 	-- "$@")
 if [ $? != 0 ] ; then
 	echo "Problem parsing command line" >&2
@@ -58,10 +60,16 @@ while true ; do
 		-s|--scheme) scheme="$2" ; shift 2 ;;
 		--srv-domain) srv_domain="$2" ; shift 2 ;;
 		-w|--watch) watch=1 ; shift ;;
+		-h|--help) print_usage=1 ; shift ;;
 		--) break ;;
 		*) echo "Internal command line error" >&2 ; echo "$USAGE" ; exit 1 ;;
 	esac
 done
+
+if [ "$print_usage" != 0 ] ; then
+	echo "$USAGE"
+	exit 0
+fi
 
 # Build confd command line
 declare -a confd_options
