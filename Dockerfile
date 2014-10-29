@@ -14,5 +14,4 @@ RUN mv /tmp/confd-0.6.3-linux-amd64 /opt/confd && \
 # Add the start script
 ADD start /opt/
 
-# Do not set and entrypoint in the base image
-#ENTRYPOINT [ "/opt/start" ]
+CMD [ "/opt/start" ]
