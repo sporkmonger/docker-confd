@@ -18,5 +18,9 @@ You can specify a subset of the confd command line arguments as arguments to the
 * -w|--watch
 * -h|--help
 
-
-
+You can also specify some of the basic options from the environment. They are all optional and can be overridden from the command line:
+* ETCD_BACKEND
+* ETCD_INTERVAL
+* ETCD_NODE
+* ETCD_PREFIX
+* ETCD_SCHEME

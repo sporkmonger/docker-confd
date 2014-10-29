@@ -7,14 +7,15 @@ hash -r
 set -o nounset
 set -o errexit
 
-backend="etcd"
+# You can also set the basic options from the environment
+backend=${ETCD_BACKEND:-"etcd"}
 client_ca_keys=""
 client_cert=""
 client_key=""
-interval=600
-node=""
-prefix="/"
-scheme="http"
+interval=${ETCD_INTERVAL:-600}
+node=${ETCD_NODE:-""}
+prefix=${ETCD_PREFIX:-"/"}
+scheme=${ETCD_SCHEME:-"http"}
 srv_domain=""
 watch=0
 print_usage=0
@@ -102,8 +103,8 @@ fi
 
 
 # Do a quick onetime run of confd to initialize the configuration
-/opt/confd -onetime "${confd_options[@]}"
-
+echo /opt/confd -onetime "${confd_options[@]}"
+exit 0
 # Add supervisor configuration to run confd, the printf is to preserve argument quoting
 args=$(printf " %q" "${confd_options[@]}")
 cat > /etc/supervisor/conf.d/confd.conf <<CONFD
