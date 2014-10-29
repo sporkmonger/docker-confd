@@ -103,8 +103,8 @@ fi
 
 
 # Do a quick onetime run of confd to initialize the configuration
-echo /opt/confd -onetime "${confd_options[@]}"
-exit 0
+/opt/confd -onetime "${confd_options[@]}"
+
 # Add supervisor configuration to run confd, the printf is to preserve argument quoting
 args=$(printf " %q" "${confd_options[@]}")
 cat > /etc/supervisor/conf.d/confd.conf <<CONFD
