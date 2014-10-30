@@ -8,14 +8,14 @@ set -o nounset
 set -o errexit
 
 # You can also set the basic options from the environment
-backend=${ETCD_BACKEND:-"etcd"}
+backend=${CONFD_BACKEND:-"etcd"}
 client_ca_keys=""
 client_cert=""
 client_key=""
-interval=${ETCD_INTERVAL:-600}
-node=${ETCD_NODE:-""}
-prefix=${ETCD_PREFIX:-"/"}
-scheme=${ETCD_SCHEME:-"http"}
+interval=${CONFD_INTERVAL:-600}
+node=${CONFD_NODE:-""}
+prefix=${CONFD_PREFIX:-"/"}
+scheme=${CONFD_SCHEME:-"http"}
 srv_domain=""
 watch=0
 print_usage=0
