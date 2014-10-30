@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:trusty
 MAINTAINER Chris Hardekopf <cjh@ygdrasill.com>
 
 # Update and install supervisor
