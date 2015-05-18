@@ -20,10 +20,23 @@ RUN mkdir -p /opt/bin/ && \
 	mkdir -p /etc/opt/hashes/ && \
 	sh -c 'echo "$CONFD_HASH  /opt/bin/confd" > /etc/opt/hashes/confd.sha512' && \
 	sha512sum -c /etc/opt/hashes/confd.sha512 && \
-	chmod a+x /opt/bin/confd && \
 	mkdir -p /etc/confd/{conf.d,templates}
+
+# Note that this is not the correct way to do key pinning.
+# The latest version of curl on Ubuntu is 7.35, while real
+# key pinning on curl is part of the 7.39 release, which
+# isn't available on any version of Ubuntu yet. We're using
+# poor-man's key pinning instead and backing it up w/ a
+# SHA512 hash over the entire binary. The pin here provides
+# little real security beyond a sanity check and a gotcha
+# for a particularly careless MITM. Gentoo has the latest
+# version of curl and might be a better base image option
+# here given the security concerns.
 
 # Add the start script
 ADD start /opt/bin/
+
+# Set permissions
+RUN chmod a+x /opt/bin/confd /opt/bin/start
 
 CMD [ "/opt/bin/start" ]
