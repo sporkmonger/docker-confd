@@ -15,4 +15,8 @@ ADD start /opt/bin/
 # Set permissions
 RUN chmod a+x /opt/bin/confd /opt/bin/start
 
+# I just can't deal with terminals that don't have pretty colors.
+ENV PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] " \
+  TERM="xterm-color"
+
 CMD [ "/opt/bin/start" ]
