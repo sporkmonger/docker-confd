@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM quay.io/sporkmonger/secure-bootstrap
 MAINTAINER Bob Aman <bob@sporkmonger.com>
 
 RUN apk add --update bash && rm -rf /var/cache/apk/*
